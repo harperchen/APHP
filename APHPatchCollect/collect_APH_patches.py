@@ -9,11 +9,11 @@ import os
 
 # read config from files
 cp = configparser.RawConfigParser(converters={'list': lambda x: [i.strip() for i in x.split(',')]})
-cp.read('/root/bug-tools/APHP-ArtifactEvaluation/APHP-src/config/config.cfg')
-keywords = cp.getlist('PATCH_COLLECT','keyword')
+cp.read('/home/weichen/APHP/APHP-src/config/config.cfg')
+keywords = cp.getlist('KEYWORD','message')
 PATCH_DIR = cp.get('DATA_PATH','patch')
-neg_keywords = ['revert']
-
+neg_keywords = ['revert', 'fix compilation', 'fix compile', 'add support', 'support']
+desc_tags_prefixes = cp.getlist('ARR','prefixes')
 
 class APHPatchCollector:
     def __init__(self,repo_name) -> None:
@@ -23,6 +23,7 @@ class APHPatchCollector:
         self.repo1 = Git(self.source_dir)
         self.commit_url = cp.get('COMMITURL',repo_name)
         self.get_APH_patches()
+        # self.check_is_related_to_APH('2b064d91440b')
     
     
     def get_APH_patches(self):
@@ -49,12 +50,13 @@ class APHPatchCollector:
         
     def check_is_related_to_APH(self,hexsha):
         commit = self.repo.commit(hexsha)
-        return bool((self.check_patch_description(commit.summary) and self.check_code_changes(hexsha)))
+        return bool((self.check_patch_description(commit.summary) and self.check_code_changes(hexsha)
+                      and self.check_if_driver(hexsha)))
     
 
     def check_code_changes(self,hexsha):
         commit = self.repo1.get_commit(hexsha)
-        if commit.files>2 or commit.insertions>10 or commit.deletions>10:
+        if commit.files>5 or commit.insertions>30 or commit.deletions>30:
             return False
 
         # func-level check: no modification for func or too many funcs
@@ -62,15 +64,33 @@ class APHPatchCollector:
         for f in commit.modified_files:
             modified_func.extend(method.name for method in f.changed_methods)
         
-        return len(modified_func) >= 1 and len(modified_func) <= 2
-
-
+        return len(modified_func) >= 1 and len(modified_func) <= 5        
 
     def check_patch_description(self, desc):
         desc = desc.lower()
         if any(keyword in desc for keyword in neg_keywords):
             return False
         return any((key in desc for key in keywords))
+    
+    def check_if_driver(self,hexsha):
+        commit = self.repo1.get_commit(hexsha)
+        for f in commit.modified_files:
+            if f.new_path and not f.new_path.startswith("drivers/") \
+                and not f.new_path.startswith("sound/"):
+                return False
+        return True
+                    
+    
+    def check_if_ccstable(self, hexsha):
+        commit = self.repo1.get_commit(hexsha)
+        lines = commit.msg.splitlines()
+        lines_filter = list(filter(lambda x: x.startswith(tuple(desc_tags_prefixes)), lines))
+        for line in lines_filter:
+            if 'stable@vger.kernel.org' in line:
+                return True
+            if 'stable@kernel.org' in line:
+                return True
+        return False
         
 
 

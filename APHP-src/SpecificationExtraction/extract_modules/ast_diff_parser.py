@@ -6,7 +6,7 @@ import json
 import re  
 from extract_modules.patch_simple_parser import PatchSimpleParser
 from extract_modules.gumtree_runner import GumTreeRunner
-import tree_sitter_helper
+from utils import tree_sitter_helper
 
 
 from config import cp

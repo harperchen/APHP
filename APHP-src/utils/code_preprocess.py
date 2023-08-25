@@ -4,7 +4,7 @@ import re
 from icecream import ic
 
 
-import tree_sitter_helper
+from utils import tree_sitter_helper
 
 # parser = tree_sitter_helper.tree_sitter_init()
 # CURRENT_DIR = os.path.dirname(os.path.realpath(__file__))

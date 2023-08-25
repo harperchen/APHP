@@ -1,4 +1,4 @@
-import tree_sitter_helper
+from utils import tree_sitter_helper
 parser = tree_sitter_helper.tree_sitter_init()
 
 class DiffParser:

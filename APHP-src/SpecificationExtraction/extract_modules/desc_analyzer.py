@@ -8,7 +8,7 @@ from extract_modules.patch_simple_parser import PatchSimpleParser
 from extract_modules.desc_condition_clause_extractor import ConditionExtractorForText
 from extract_modules.diff_parser import DiffParser
 
-import tree_sitter_helper
+from utils import tree_sitter_helper
 import spacy
 
 nlp = spacy.load("en_core_web_sm")

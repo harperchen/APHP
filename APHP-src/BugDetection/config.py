@@ -1,7 +1,7 @@
 import configparser
 import os
 
-APHP_DIR = "/root/APHP"
+APHP_DIR = "/home/weichen/APHP"
 APHP_SRC_DIR = f"{APHP_DIR}/APHP-src"
 CPU_COUNT = 24
 CFG_TIMEOUT = 100

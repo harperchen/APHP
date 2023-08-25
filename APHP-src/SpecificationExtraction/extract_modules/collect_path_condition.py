@@ -5,7 +5,7 @@ from icecream import ic
 import os
 import timeout_decorator
 import sys
-sys.path.append('/root/bug-tools/APHP-ArtifactEvaluation/APHP-src')
+sys.path.append('/home/weichen/APHP/APHP-src')
 # import cfg_analyzer
 # sys.path.append('../joern_plugin')
 # import analyzer4joern

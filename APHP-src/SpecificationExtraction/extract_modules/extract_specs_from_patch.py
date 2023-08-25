@@ -7,7 +7,7 @@ import nltk
 from icecream import ic
 import sys
 from icecream import ic
-sys.path.append('/root/APHP/APHP-src')
+sys.path.append('/home/weichen/APHP/APHP-src')
 
 from utils import tree_sitter_helper
 from extract_modules.collect_path_condition import pathCondCollector

@@ -10,9 +10,9 @@ from rich.console import Console
 
 console = Console()
 
-sys.path.append('../utils')
-import tree_sitter_helper
-import cfg_analyzer
+sys.path.append('/home/weichen/APHP/APHP-src/')
+from utils import tree_sitter_helper
+from utils import cfg_analyzer
 
 import timeout_decorator
 from datetime import datetime

@@ -6,9 +6,9 @@ from rich.progress import track
 from icecream import ic
 from multiprocessing import Pool
 import sys
-sys.path.append('../utils')
-import tree_sitter_helper
-from code_preprocess import CodePreProcessor
+sys.path.append('/home/weichen/APHP/APHP-src/')
+from utils import tree_sitter_helper
+from utils.code_preprocess import CodePreProcessor
 from config import cp
 from config import DETECT_DATA_ROOT,DETECT_WORK_ROOT,CPU_COUNT
 

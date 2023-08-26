@@ -10,9 +10,9 @@ import os
 # read config from files
 cp = configparser.RawConfigParser(converters={'list': lambda x: [i.strip() for i in x.split(',')]})
 cp.read('/home/weichen/APHP/APHP-src/config/config.cfg')
-keywords = cp.getlist('KEYWORD','message')
+keywords = cp.getlist('KEYWORD','message') + cp.getlist('KEYWORD', 'check') + cp.getlist('KEYWORD', 'errorhandling')
 PATCH_DIR = cp.get('DATA_PATH','patch')
-neg_keywords = ['revert', 'fix compilation', 'fix compile', 'add support', 'support']
+neg_keywords = ['revert', 'fix compilation', 'fix compile', 'add support']
 desc_tags_prefixes = cp.getlist('ARR','prefixes')
 
 class APHPatchCollector:
@@ -23,7 +23,7 @@ class APHPatchCollector:
         self.repo1 = Git(self.source_dir)
         self.commit_url = cp.get('COMMITURL',repo_name)
         self.get_APH_patches()
-        # self.check_is_related_to_APH('2b064d91440b')
+        # print(self.check_is_related_to_APH('56a468b5f6454aae0e32e4c6ead1abde5cc4dd23'))
     
     
     def get_APH_patches(self):
@@ -49,8 +49,7 @@ class APHPatchCollector:
 
         
     def check_is_related_to_APH(self,hexsha):
-        commit = self.repo.commit(hexsha)
-        return bool((self.check_patch_description(commit.summary) and self.check_code_changes(hexsha)
+        return bool((self.check_patch_description(hexsha) and self.check_code_changes(hexsha)
                       and self.check_if_driver(hexsha)))
     
 
@@ -66,7 +65,12 @@ class APHPatchCollector:
         
         return len(modified_func) >= 1 and len(modified_func) <= 5        
 
-    def check_patch_description(self, desc):
+    def check_patch_description(self, hexsha):
+        commit = self.repo1.get_commit(hexsha)
+        lines = commit.msg.splitlines()
+        lines_filter = list(
+            filter(lambda x: not x.startswith(tuple(desc_tags_prefixes)), lines))
+        desc = " ".join(lines_filter)
         desc = desc.lower()
         if any(keyword in desc for keyword in neg_keywords):
             return False

@@ -1,9 +1,9 @@
 import configparser
 import os
 
-APHP_SRC_DIR = "/root/APHP/APHP-src"
-CORENLP_PATH = '/root/APHP/tools/stanford-corenlp-4.4.0'
-TREE_SITTER_C_PATH  = "/root/APHP/tools/tree-sitter-c"
+APHP_SRC_DIR = "/home/weichen/APHP/APHP-src"
+CORENLP_PATH = '/home/weichen/APHP/tools/stanford-corenlp-4.4.0'
+TREE_SITTER_C_PATH  = "/home/weichen/APHP/tools/tree-sitter-c"
 CPU_COUNT = 24
 
 cp = configparser.RawConfigParser(converters={'list': lambda x: [i.strip() for i in x.split(',')]})

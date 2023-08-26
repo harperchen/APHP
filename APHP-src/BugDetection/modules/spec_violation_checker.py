@@ -3,14 +3,14 @@ import os
 import pandas as pd
 from icecream import ic
 import sys
-sys.path.append('../utils')
-import cfg_analyzer as cfg_analyzer
-import tree_sitter_helper
+sys.path.append('/home/weichen/APHP/APHP-src/utils')
+import utils.cfg_analyzer as cfg_analyzer
+from utils import tree_sitter_helper
 from typing import List
 from modules.report_verifier import ReportVerifier
 import traceback
 from config import cp, BUG_REPORT_FILE,DETECT_DATA_ROOT
-from path_classifier import PathClassifier
+from utils.path_classifier import PathClassifier
 
 
 

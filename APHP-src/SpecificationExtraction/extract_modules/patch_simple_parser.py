@@ -3,8 +3,8 @@ import os
 from git import Repo
 import configparser
 import sys
-sys.path.append('../utils')
-from code_preprocess import CodePreProcessor
+sys.path.append('/home/weichen/APHP/APHP-src/')
+from utils.code_preprocess import CodePreProcessor
 from icecream import ic
 from config import cp
 from config import DIFF_LEFT_DIR,DIFF_RIGHT_DIR,desc_tags_prefixes

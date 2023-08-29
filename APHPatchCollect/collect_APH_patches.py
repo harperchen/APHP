@@ -12,7 +12,7 @@ cp = configparser.RawConfigParser(converters={'list': lambda x: [i.strip() for i
 cp.read('/home/weichen/APHP/APHP-src/config/config.cfg')
 keywords = cp.getlist('KEYWORD','message') + cp.getlist('KEYWORD', 'check') + cp.getlist('KEYWORD', 'errorhandling')
 PATCH_DIR = cp.get('DATA_PATH','patch')
-neg_keywords = ['revert', 'fix compilation', 'fix compile', 'add support']
+neg_keywords = ['revert', 'fix compilation', 'fix compile', 'add support', 'spell', 'typo']
 desc_tags_prefixes = cp.getlist('ARR','prefixes')
 
 class APHPatchCollector:
@@ -30,9 +30,10 @@ class APHPatchCollector:
         branch = cp.get('BRANCH',self.repo_name)
         print("Collecting patches potentially relted to APH bugs in" , self.repo_name, branch)
         patch_file_path = os.path.join(PATCH_DIR, f'APH_patches_{self.repo_name}_{branch}.csv')
+        # 2019/02/19-2023/02/19 commits in v6.2
         idlist = list(
                 self.repo.iter_commits(
-                    branch, max_count=999999, no_merges=True,
+                    branch, max_count=384325, no_merges=True,
                 )
             )
         df = pd.DataFrame()
